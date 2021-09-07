@@ -5,19 +5,23 @@ const feedbackForm = qs('.feedback-form');
 const formEmail = qs('[name="email"]');
 const formMessage = qs('[name="message"]');
 
-const getLSItemObj = item => JSON.parse(localStorage.getItem(item));
-
-const updateFeedbackFormSate = () => {
- let email = formEmail.value;
+const updateEmailMessage = () => {
+  let email = formEmail.value;
   let message = formMessage.value;
   return JSON.stringify({ email, message });
 };
 
+const clearEmailMessage = () => {
+  formEmail.value = '';
+  formMessage.value = '';
+};
+
+const getObjLocalStorage = item => JSON.parse(localStorage.getItem(item));
+
 const loadLocalStorage = () => {
-  let savedInputSate = getLSItemObj('feedback-form-state');
+  let savedInputSate = getObjLocalStorage('feedback-form-state');
   if (savedInputSate === null) {
-    formEmail.value = '';
-    formMessage.value = '';
+    clearEmailMessage();
   } else {
     console.log(savedInputSate);
     formEmail.value = savedInputSate.email;
@@ -27,20 +31,19 @@ const loadLocalStorage = () => {
 
 const removeLocalStorage = () => {
   event.preventDefault();
-  const itemToDelat = getLSItemObj('feedback-form-state');
+  const itemToDelat = getObjLocalStorage('feedback-form-state');
   if (itemToDelat === null) {
     console.log("Input doesn't exist!");
   } else {
     console.log(itemToDelat.email);
     console.log(itemToDelat.message);
     localStorage.removeItem('feedback-form-state');
-    loadLocalStorage(); // clear input form
+    clearEmailMessage();
   }
 };
 
-const saveLocalStorage = () =>
-  localStorage.setItem('feedback-form-state', updateFeedbackFormSate());
+const saveLocalStorage = () => localStorage.setItem('feedback-form-state', updateEmailMessage());
 
 loadLocalStorage();
-feedbackForm.addEventListener('input', saveLocalStorage);
+feedbackForm.addEventListener('input', throttle(saveLocalStorage, 500));
 feedbackForm.addEventListener('submit', removeLocalStorage);

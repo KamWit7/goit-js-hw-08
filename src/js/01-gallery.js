@@ -19,7 +19,6 @@ const query = ({ preview, original, description }) => {
           </a>`;
 };
 
-
 function defaultGalery() {
   gallery.innerHTML = createGalery(galleryItems, query); 
   new SimpleLightbox('.gallery a', {

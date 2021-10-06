@@ -5,7 +5,6 @@ const feedbackForm = qs('.feedback-form');
 const formEmail = qs('[name="email"]');
 const formMessage = qs('[name="message"]');
 
-
 const getObjLocalStorage = item => JSON.parse(localStorage.getItem(item));
 
 const loadLocalStorage = () => {
@@ -19,12 +18,13 @@ const loadLocalStorage = () => {
   }
 };
 
-const removeLocalStorage = (eve) => {
+const removeLocalStorage = eve => {
   eve.preventDefault();
   let itemToDelat = getObjLocalStorage('feedback-form-state');
 
   if (itemToDelat === null) {
     console.log("Input doesn't exist!");
+    alert("Input doesn't exist!");
   } else {
     console.log(itemToDelat.email);
     console.log(itemToDelat.message);
